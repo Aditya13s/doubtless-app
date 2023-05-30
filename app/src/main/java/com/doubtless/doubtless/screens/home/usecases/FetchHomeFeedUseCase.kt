@@ -62,9 +62,11 @@ class FetchHomeFeedUseCase constructor(
         // else request page size.
         val size: Int = if (collectionCount - docFetched < request.pageSize)
             (collectionCount - docFetched).toInt()
+
         else
             request.pageSize
 
+        Log.i("pageSize", "$collectionCount  $docFetched  ${request.pageSize}  $size")
         val feedByDateJob = async {
             fetchFeedByDateUseCase.getFeedData(request.copy(pageSize = size / 2)) // ratio
         }

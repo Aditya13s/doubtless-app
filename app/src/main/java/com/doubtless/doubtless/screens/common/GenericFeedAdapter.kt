@@ -1,5 +1,6 @@
 package com.doubtless.doubtless.screens.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -24,25 +25,31 @@ class GenericFeedAdapter(
 
         when (viewType) {
             FeedEntity.TYPE_DOUBT -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.doubt_layout, parent, false)
-                return DoubtPreviewViewHolder(view, object: DoubtPreviewViewHolder.InteractionListener {
-                    override fun onDoubtClicked(doubtData: DoubtData, position: Int) {
-                        interactionListener.onDoubtClicked(doubtData, position)
-                    }
-                })
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.doubt_layout, parent, false)
+                return DoubtPreviewViewHolder(
+                    view,
+                    object : DoubtPreviewViewHolder.InteractionListener {
+                        override fun onDoubtClicked(doubtData: DoubtData, position: Int) {
+                            interactionListener.onDoubtClicked(doubtData, position)
+                        }
+                    })
             }
 
             FeedEntity.TYPE_SEARCH -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_home_search, parent, false)
-                return HomeSearchViewHolder(view, object : HomeSearchViewHolder.InteractionListener {
-                    override fun onLayoutClicked() {
-                        interactionListener.onSearchBarClicked()
-                    }
-                })
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.layout_home_search, parent, false)
+                return HomeSearchViewHolder(
+                    view,
+                    object : HomeSearchViewHolder.InteractionListener {
+                        override fun onLayoutClicked() {
+                            interactionListener.onSearchBarClicked()
+                        }
+                    })
             }
         }
 
-         throw Exception("type is not defined")
+        throw Exception("type is not defined")
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -67,6 +74,7 @@ class GenericFeedAdapter(
     }
 
     override fun getItemCount(): Int {
+        Log.i("AdapterSize", genericFeedEntities.size.toString())
         return genericFeedEntities.size
     }
 

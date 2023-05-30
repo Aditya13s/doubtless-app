@@ -16,15 +16,17 @@ import com.doubtless.doubtless.screens.auth.User
 import com.doubtless.doubtless.screens.auth.usecases.UserDataServerUseCase
 import com.doubtless.doubtless.screens.auth.usecases.UserDataStorageUseCase
 import com.doubtless.doubtless.screens.auth.usecases.UserManager
+import com.doubtless.doubtless.screens.dashboard.usecases.FetchUserDataUseCase
+import com.doubtless.doubtless.screens.dashboard.usecases.FetchUserFeedByDateUseCase
 import com.doubtless.doubtless.screens.doubt.usecases.DoubtDataSharedPrefUseCase
 import com.doubtless.doubtless.screens.doubt.usecases.PostDoubtUseCase
 import com.doubtless.doubtless.screens.home.usecases.FetchFeedByDateUseCase
 import com.doubtless.doubtless.screens.home.usecases.FetchFeedByPopularityUseCase
 import com.doubtless.doubtless.screens.home.usecases.FetchHomeFeedUseCase
-import com.doubtless.doubtless.screens.onboarding.usecases.AddOnBoardingDataUseCase
-import com.doubtless.doubtless.screens.onboarding.usecases.FetchOnBoardingDataUseCase
 import com.doubtless.doubtless.screens.main.MainActivity
 import com.doubtless.doubtless.screens.main.MainFragment
+import com.doubtless.doubtless.screens.onboarding.usecases.AddOnBoardingDataUseCase
+import com.doubtless.doubtless.screens.onboarding.usecases.FetchOnBoardingDataUseCase
 import com.doubtless.doubtless.screens.search.usecases.ExtractKeywordsUseCase
 import com.doubtless.doubtless.screens.search.usecases.FetchSearchResultsUseCase
 import com.google.firebase.auth.FirebaseAuth
@@ -34,7 +36,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 class AppCompositionRoot(appContext: DoubtlessApp) {
 
@@ -224,5 +225,12 @@ class AppCompositionRoot(appContext: DoubtlessApp) {
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         return remoteConfig
+    }
+
+    fun getFetchUserDataUseCase(): FetchUserDataUseCase {
+        return FetchUserDataUseCase(
+            FetchUserFeedByDateUseCase(FirebaseFirestore.getInstance()),
+            FirebaseFirestore.getInstance()
+        )
     }
 }

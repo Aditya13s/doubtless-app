@@ -1,6 +1,7 @@
 package com.doubtless.doubtless.screens.doubt.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,8 @@ import com.doubtless.doubtless.DoubtlessApp
 import com.doubtless.doubtless.analytics.AnalyticsTracker
 import com.doubtless.doubtless.databinding.FragmentViewDoubtsBinding
 import com.doubtless.doubtless.navigation.FragNavigator
-import com.doubtless.doubtless.screens.common.GenericFeedAdapter
 import com.doubtless.doubtless.screens.auth.usecases.UserManager
+import com.doubtless.doubtless.screens.common.GenericFeedAdapter
 import com.doubtless.doubtless.screens.doubt.DoubtData
 import com.doubtless.doubtless.screens.main.MainActivity
 
@@ -32,7 +33,8 @@ class ViewDoubtsFragment : Fragment() {
         userManager = DoubtlessApp.getInstance().getAppCompRoot().getUserManager()
         analyticsTracker = DoubtlessApp.getInstance().getAppCompRoot().getAnalyticsTracker()
 
-        val _navigator = DoubtlessApp.getInstance().getAppCompRoot().getHomeFragNavigator(requireActivity() as MainActivity)
+        val _navigator = DoubtlessApp.getInstance().getAppCompRoot()
+            .getHomeFragNavigator(requireActivity() as MainActivity)
 
         if (_navigator != null)
             navigator = _navigator
@@ -92,6 +94,8 @@ class ViewDoubtsFragment : Fragment() {
             adapter.appendDoubts(it)
             viewModel.notifyFetchedDoubtsConsumed()
             binding.layoutSwipe.isRefreshing = false
+
+            Log.i("HomeFeedSize", it.size.toString())
         }
     }
 
